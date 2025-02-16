@@ -1,0 +1,36 @@
+schemaVersion: v0.2
+prepare:
+  steps:
+    - command: git checkout 608d933
+    - command: sudo n 18.18
+    - command: sudo npm -g install pnpm
+    - command: pnpm install
+test:
+  steps: []
+run:
+  bolt:
+    steps:
+      - command: sudo n 18.18
+      - command: sudo npm -g install pnpm
+      - command: pnpm dev --host 0.0.0.0 --port 3000
+    plan: 10
+    replicas: 1
+    isPublic: true
+    network:
+      path: /
+      stripPath: false
+  ollama:
+    steps:
+      - command: nix-env -iA nixpkgs.ollama
+      - command: OLLAMA_HOST=0.0.0.0:3000 OLLAMA_MODELS=/home/user/app/ollama_models
+          ollama serve &
+      - command: sleep 5
+      - command: OLLAMA_HOST=0.0.0.0:3000 OLLAMA_MODELS=/home/user/app/ollama_models
+          ollama pull deepseek-coder-v2
+      - command: while true; do sleep 5; done
+    plan: 10
+    replicas: 1
+    isPublic: true
+    network:
+      path: /ollama
+      stripPath: true
