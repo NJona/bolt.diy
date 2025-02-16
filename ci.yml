@@ -29,7 +29,7 @@ run:
       - command: while true; do sleep 5; done
     plan: 10
     replicas: 1
-    isPublic: false
+    isPublic: true
     network:
       path: /ollama
       stripPath: true
