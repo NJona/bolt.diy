@@ -1,7 +1,6 @@
 schemaVersion: v0.2
 prepare:
   steps:
-    - command: git checkout 608d933
     - command: sudo n 18.18
     - command: sudo npm -g install pnpm
     - command: pnpm install
